@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Github, Linkedin, Menu, X } from 'lucide-react'
+import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Check, Code2, Copy, Github, Linkedin, Mail, Menu, X } from 'lucide-react'
 import SectionHeading from './components/SectionHeading'
 import { projects } from './data/projects'
+
+const contactEmail = 'nivetikarajasekar@gmail.com'
 
 const navItems = [
   { label: 'About', href: '#about' },
@@ -19,7 +21,17 @@ const skills = [
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [emailCopied, setEmailCopied] = useState(false)
   const closeMenu = () => setMenuOpen(false)
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(contactEmail)
+      setEmailCopied(true)
+    } catch {
+      window.location.href = `mailto:${contactEmail}`
+    }
+  }
 
   return (
     <div className="site-shell">
@@ -76,7 +88,7 @@ export default function App() {
         </section>
 
         <section className="contact section-wrap section-block" id="contact">
-          <div className="contact-panel"><div className="contact-decoration">✳</div><span className="eyebrow">04 / YOUR TURN</span><h2>Good work starts<br />with a <em>conversation.</em></h2><p>Have an interesting problem, an opportunity, or an idea worth exploring? I'd love to hear about it.</p><a className="button button-primary" href="mailto:hello@example.com">Say hello <ArrowUpRight size={17} /></a><span className="contact-small">Replace the placeholder email before publishing.</span></div>
+          <div className="contact-panel"><div className="contact-decoration">✳</div><span className="eyebrow">04 / YOUR TURN</span><h2>Good work starts<br />with a <em>conversation.</em></h2><p>Have an interesting problem, an opportunity, or an idea worth exploring? I'd love to hear about it.</p><div className="contact-actions"><a className="button button-primary" href={`mailto:${contactEmail}`}><Mail size={16} /> Email me <ArrowUpRight size={17} /></a><button className="button button-secondary" type="button" onClick={copyEmail}>{emailCopied ? <Check size={16} /> : <Copy size={16} />}{emailCopied ? 'Copied!' : 'Copy email'}</button></div><a className="contact-email" href={`mailto:${contactEmail}`}>{contactEmail}</a><span className="contact-small">Usually the best way to reach me is by email.</span></div>
         </section>
       </main>
 
